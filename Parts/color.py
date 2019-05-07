@@ -3,9 +3,9 @@ class Color(object):
     _MIN = 0
     _MAX = 255
 
-    def __init__(self,r=100,g=100,b=100):
+    def __init__(self, r=100, g=100, b=100):
         self.rgb = []
-        for val in (r,g,b):
+        for val in (r, g, b):
             if val > self._MAX:
                 val = self._MAX
             elif val < self._MIN:
@@ -22,15 +22,12 @@ class Color(object):
         return Color(r,g,b)
 
     def __sub__(self, other):
-        r,g,b = [x1 - x2 for (x1, x2) in zip(self.rgb,other.rgb)]
-        return Color(r,g,b)
+        r, g, b = [x1 - x2 for (x1, x2) in zip(self.rgb,other.rgb)]
+        return Color(r, g, b)
 
     def __mul__(self, other):
-        r,g,b = [ v * other for v in self.rgb]
-        return Color(r,g,b)
-        #else:
-        #    r,g,b = [x*v for v,x in zip(self.rgb,other)]
-        #    return Color(r,g,b)
+        r, g, b = [v * other for v in self.rgb]
+        return Color(r, g, b)
 
     def __iter__(self):
         for v in self.rgb:

@@ -5,6 +5,15 @@ from Parts.ray import Ray
 
 class Camera(object):
     def __init__(self,e,c,up,fieldOfView, wRes, hRes):
+        '''
+        Initialize Camera
+        :param e: Position of Camera
+        :param c: Brennweitenpunkt?
+        :param up: Up Vektor
+        :param fieldOfView:
+        :param wRes: Imagewidth
+        :param hRes: Imageheight
+        '''
         self.e = e
         self.c = c
         self.up = up
@@ -16,7 +25,6 @@ class Camera(object):
 
         self.f = (c-e)/ np.linalg.norm(c-e)
         self.s = np.cross(self.f,up) / np.linalg.norm(np.cross(self.f,up))
-
         self.u = np.cross(self.s,self.f)
 
         #Gradmaß in Bogenmaß umrechnen und halbieren
