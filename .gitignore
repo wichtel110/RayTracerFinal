@@ -1,0 +1,6 @@
+### Virtual Env ###
+/venv/
+
+### Idea ###
+.DS_Store
+.idea/

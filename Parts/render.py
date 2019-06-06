@@ -1,15 +1,7 @@
 from Parts.ray import Ray
 from Parts.color import Color
-from PIL import Image
-from threading import Thread
-
-image = Image.new("RGB", (500, 500), (0, 0, 0))
-
 
 class Render(object):
-
-
-
     def __init__(self, camera, bgcolor, maxTraceLevel, objectList, lightList):
         self.camera = camera
         self.bgcolor = bgcolor
@@ -18,50 +10,19 @@ class Render(object):
         self.lightList = lightList
 
 
-    def preRender(self,tracelevel):
 
-        # Create all Slice
-        sli = []
-        threadList = []
-        for x in range(0,self.camera.wRes,100):
-            sli.append(x)
-
-        # Create Threads
-        for parts in sli:
-            threadList.append(Thread(target=self.startRender, args=(tracelevel,parts,parts+100)))
-
-        # Start threads
-        for thread in threadList:
-            thread.start()
-
-        # Join threads
-        for thread in threadList:
-            thread.join()
-
-
-        from datetime import datetime
-        image.save("{}.png".format(datetime.now()), "PNG")
-
-
-
-    def startRender(self, traceLevel,start,end):
-
-        for y in range(start, end):
+    def startRender(self, traceLevel):
+        for y in range(self.camera.hRes):
             for x in range(self.camera.wRes):
                 ray = self.camera.calcRay(x, y)
                 color = self.traceRay(traceLevel, ray)
-                image.putpixel((x, y), (int(color[0]),int(color[1]),int(color[2])))
-
-        #from datetime import datetime
-        #image.save("{}.png".format(datetime.now()), "PNG")
+                yield [x, self.camera.hRes - 1 - y, [int(color[0]),int(color[1]),int(color[2])]]
 
 
     def traceRay(self, traceLevel, ray):
         hitPointData = self.intersect(traceLevel, ray)  # maxLevel = maximale Rekursions−Tiefe
-
         if hitPointData:
             return self.shade(traceLevel, hitPointData)
-
         return self.bgcolor
 
     def shade(self, traceLevel, hitPointData):
@@ -73,7 +34,7 @@ class Render(object):
             reflectColor = self.traceRay(traceLevel + 1, reflectedRay)
 
 
-        return directColor + reflectColor
+        return directColor + reflectColor* 0.5
 
 
     def computeReflectedRay(self, hitPointData):

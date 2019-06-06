@@ -1,3 +1,7 @@
+'''
+
+'''
+
 import numpy as np
 from PIL import Image
 from Parts.camera import Camera
@@ -7,7 +11,6 @@ from Objects.plane import Plane
 from Objects.triangle import Triangle
 from Objects.light import Light
 from Parts.material import Material,CheckboardMaterial
-
 from Parts.color import Color
 
 from threading import Thread
@@ -19,15 +22,15 @@ Settings For Camera, Materials etc.
 #
 # Grundlegendes (Bildgröße usw)
 #
-HEIGHT = 500
-WIDTH = 500
+HEIGHT = 200
+WIDTH = 200
 
 #
 # Camera Einstellungen
 #
 
 E = np.array([0,1.8,10])
-UP = np.array([0,-1,0])
+UP = np.array([0,1,0])
 C = np.array([0,3,0])
 FIELDOFVIEW = 45
 
@@ -60,7 +63,7 @@ objList =[
 
 ### Lights
 lightList =[
-    Light(np.array([-30, 30, 10]))
+    Light(np.array([30, 30, 10]))
 ]
 
 if __name__ == '__main__':
@@ -68,25 +71,21 @@ if __name__ == '__main__':
     render = Render(camera,BGCOLOR,maxTraceLevel=MAXLEVEL,objectList=objList,lightList=lightList)
 
 
+    render.startRender(STARTLEVEL)
+
+    im = Image.new("RGB", (WIDTH, HEIGHT), (0, 0, 0))
+    pictureGen = render.startRender(traceLevel=STARTLEVEL)
 
 
 
-    render.preRender(STARTLEVEL)
-    #render.startRender(STARTLEVEL,0,HEIGHT)
-
-    #im = Image.new("RGB", (WIDTH, HEIGHT), (0, 0, 0))
-    #pictureGen = render.startRender(traceLevel=STARTLEVEL)
-
-
-
-    #for pixel in pictureGen:
-    #    '''
-    #    0: x
-    #    1: y
-    #    2: r,g,b
-    #    '''
-    #    im.putpixel((pixel[0], pixel[1]), (int(pixel[2][0]),int(pixel[2][1]),int(pixel[2][2])))
+    for pixel in pictureGen:
+        '''
+        0: x
+        1: y
+        2: r,g,b
+        '''
+        im.putpixel((pixel[0], pixel[1]), (int(pixel[2][0]),int(pixel[2][1]),int(pixel[2][2])))
 
 
-    #from datetime import datetime
-    #im.save("{}.png".format(datetime.now()), "PNG")
+    from datetime import datetime
+    im.save("{}.png".format(datetime.now()), "PNG")
