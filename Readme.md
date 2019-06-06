@@ -15,6 +15,6 @@ Zu realisieren war ein einfacher Raytracer mit Schatten und Spiegelung.
 
 - Threading implementieren mit (Thread)
 
-###Threading
+### Threading
 Threading wurde wieder entfernt da, Thread kein wirkliches threading im klassischen Sinne ist.
 Vorerst entfernt
